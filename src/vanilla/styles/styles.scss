@@ -1,0 +1,170 @@
+
+
+// ag-grid.scss defines structural styles and should be imported first
+@import "~ag-grid-community/src/styles/ag-grid.scss";
+@import "~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss";
+
+// Fonts from https://fontawesome.com/
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+
+$gridRowHoverColor: rgb(189, 64, 189);
+
+.ag-theme-material {
+  @include ag-theme-material((
+    // header-height: 80px,
+    // row-height: 50px,
+    // row-hover-color: var(--gridRowHoverColor, #{$gridRowHoverColor}),
+    // header-background-color: lightblue,
+
+    // // Use Font Awesome for icons
+    icon-font-family: "Font Awesome 5 Free",
+    // The @imports above embed the Font Awesome data, so set icons-data to null to avoid
+    // the theme's default font from being embedded too
+    icons-data: null,
+    // Map ag-Grid icon names to Font Awesome character codes
+    icons-font-codes: (
+        "aggregation": "\f247",
+        "arrows": "\f0b2",
+        "asc": "\f062",
+        "cancel": "\f057",
+        "chart": "\f080",
+        "color-picker": "\f576",
+        "columns": "\f0db",
+        "contracted": "\f146",
+        "copy": "\f0c5",
+        "cross": "\f00d",
+        "desc": "\f063",
+        "expanded": "\f0fe",
+        "eye-slash": "\f070",
+        "eye": "\f06e",
+        "filter": "\f0b0",
+        "first": "\f100",
+        "grip": "\f58e",
+        "group": "\f5fd",
+        "last": "\f101",
+        "left": "\f060",
+        "linked": "\f0c1",
+        "loading": "\f110",
+        "menu": "\f0c9",
+        "maximize": "\f2d0",
+        "minimize": "\f2d1",
+        "next": "\f105",
+        "none": "\f338",
+        "not-allowed": "\f05e",
+        "paste": "\f0ea",
+        "pin": "\f276",
+        "pivot": "\f074",
+        "previous": "\f104",
+        "right": "\f061",
+        "save": "\f0c7",
+        "small-down": "\f107",
+        "small-left": "\f104",
+        "small-right": "\f105",
+        "small-up": "\f106",
+        "tick": "\f00c",
+        "tree-closed": "\f105",
+        "tree-indeterminate": "\f068",
+        "tree-open": "\f107",
+        "unlinked": "\f127",
+    )
+  ));
+
+  // use CSS rules when no theme parameter is available
+  .ag-group-title-bar {
+    background-color: lightgreen;
+  }
+
+  .ag-icon {
+    // required because Font Awesome uses bold glyphs for its icons
+    font-weight: bold;
+  }
+
+
+
+
+
+  // ***************************************
+  // ******* modified header styles ********
+  // ***************************************
+
+  // modified header menu icon
+  .ag-header-cell .ag-icon-menu::before {
+    content: '\f0b0' !important;
+  }
+
+  // modified header menu icon when filtering
+  .ag-header-cell.ag-header-cell-filtered .ag-icon-menu::before {
+    content: '\f662' !important;
+  }
+
+    // hide additional filter icon that appears in header when filtering
+    .ag-header-cell-label .ag-icon-filter::before {
+      display: none !important;
+    }
+
+
+
+    // ***************************************
+    // ***** filter count in column menu *****
+    // ***************************************
+
+    // *** generates a list of classes for each column in the grid e.g. ***
+    // *
+    // .ag-theme-alpine.filter-1 .ag-tab .ag-icon-filter::after, 
+    // .ag-theme-alpine.filter-1 .ag-side-button .ag-icon-filter::after {
+    //    content: "1";
+    // }
+    // .ag-theme-alpine.filter-2 .ag-tab .ag-icon-filter::after, 
+    // .ag-theme-alpine.filter-2 .ag-side-button .ag-icon-filter::after {
+    //    content: "1";
+    // }
+    // etc.
+    $columns: 27;
+    @mixin filter-count {
+      @for $i from 1 through $columns {
+          &.filter-#{$i} .ag-tab .ag-icon-filter::after,
+          &.filter-#{$i} .ag-side-button .ag-icon-filter::after { 
+            content: '#{$i}'
+          }
+      }
+    }
+    @include filter-count;
+
+    @mixin filter-count-icon {
+      background: limegreen;
+      color: white;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      text-align: center;
+      padding-top: 1px;
+      font-family: 'arial';
+      font-size: 12px;
+    }
+    
+    .ag-tab .ag-icon-filter::after {
+      @include filter-count-icon;
+      position: absolute;
+      margin-left: 8px;
+      top: 7px;
+    }
+    
+    .ag-side-button .ag-icon-filter::after {
+      @include filter-count-icon;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: rotate(90deg);
+      margin-bottom: 15px;
+    }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 1rem;
+  height: 100%;
+}
